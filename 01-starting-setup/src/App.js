@@ -29,9 +29,11 @@ function App() {
         },
     ];
     return (
-        <div>
+        // this is known as fragment, we can use this in-place of div to wrap
+        // the JSX code which we want to retun.
+        <>
             <Expenses items={expenses} />
-        </div>
+        </>
     );
 
     //     The below written code is an example of how
