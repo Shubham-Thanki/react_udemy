@@ -13,7 +13,7 @@ function Expenses(props) {
             />
         );
     });
-    console.log(expenseItemView);
+    // console.log(expenseItemView);
     return <Card className="expenses">{expenseItemView}</Card>;
 }
 
