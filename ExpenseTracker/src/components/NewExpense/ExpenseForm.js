@@ -32,6 +32,7 @@ export default function ExpenseForm(props) {
                         type="text"
                         placeholder="Title here..."
                         name="title"
+                        required
                     />
                 </div>
                 <div className="new-expense__control">
@@ -41,6 +42,7 @@ export default function ExpenseForm(props) {
                         step="0.01"
                         placeholder="Amount here..."
                         name="amount"
+                        required
                     />
                 </div>
                 <div className="new-expense__control">
@@ -50,6 +52,7 @@ export default function ExpenseForm(props) {
                         max="2022-12-31"
                         placeholder="Date here..."
                         name="date"
+                        required
                     />
                 </div>
             </div>
