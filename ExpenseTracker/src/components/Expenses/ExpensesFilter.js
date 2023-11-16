@@ -5,6 +5,13 @@ const ExpensesFilter = (props) => {
         props.expensesFilterHandler(ev.target.value);
     }
 
+    /* ExpensesFilter is a controlled component. A controlled component
+    receives its current value and an update callback via props, and the parent
+    component manages the state of the component.
+
+    When the user interacts with the component, the parent component updates the
+    state, which in turn updates the component's value. */
+
     return (
         <div className="expenses-filter" id="shut">
             <div className="expenses-filter__control">
