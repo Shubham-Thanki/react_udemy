@@ -8,14 +8,13 @@ const Chart = (props) => {
     // SYNTAX
     // array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
     // refer MDN for details on reduce() method.
-    // we use `reduce` instead of any other method due to performance reasons.
     let maxValue = props.dataPoints.reduce((accumulator, currentExpense) => {
         if (currentExpense.value > accumulator) {
             return currentExpense.value;
         }
         return accumulator;
     }, 0);
-    maxValue = 10 ** (String(Math.round(maxValue)).length - 1);
+    // maxValue = 10 ** String(Math.round(maxValue)).length;
     return (
         <div className="chart">
             {props.dataPoints.map((dataPoint) => {
