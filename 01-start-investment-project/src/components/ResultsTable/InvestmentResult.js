@@ -1,10 +1,17 @@
-import "./InvestmentResult.css";
+import classes from "./InvestmentResult.module.css"
 
 export default function InvestmentResult(propsFromNewInvestment) {
     const yearlyResults = propsFromNewInvestment.yearlyResults;
+    const formatter = new Intl.NumberFormat("en-IN", {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+
     if (yearlyResults.length > 0) {
         return (
-            <table className="result">
+            <table className={classes.result}>
                 <thead>
                     <tr>
                         <th>At the end of Year</th>
@@ -19,10 +26,10 @@ export default function InvestmentResult(propsFromNewInvestment) {
                         return (
                             <tr key={resultPerYear.year}>
                                 <td>{resultPerYear.year}</td>
-                                <td>₹ {resultPerYear.investedCapital}</td>
-                                <td>₹ {resultPerYear.yearlyInterest}</td>
-                                <td>₹ {resultPerYear.totalInterest}</td>
-                                <td>₹ {resultPerYear.savingsEndOfYear}</td>
+                                <td>{formatter.format(resultPerYear.investedCapital)}</td>
+                                <td>{formatter.format(resultPerYear.yearlyInterest)}</td>
+                                <td>{formatter.format(resultPerYear.totalInterest)}</td>
+                                <td>{formatter.format(resultPerYear.savingsEndOfYear)}</td>
                             </tr>
                         );
                     })}
