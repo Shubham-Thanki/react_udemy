@@ -1,67 +1,52 @@
-import classes from "./InvestmentForm.module.css"
+import classes from "./InvestmentForm.module.css";
 
-export default function InvestmentForm(propsFromApp) {
-    function submitHandler(ev) {
+export default function InvestmentForm({ onCalculate }) {
+    const handleSubmit = (ev) => {
         ev.preventDefault();
         const formData = new FormData(ev.currentTarget);
         const investObj = {
-            "initial-savings": formData.get("initial-savings"),
-            "yearly-contribution": formData.get("yearly-contribution"),
-            "expected-return": formData.get("expected-return"),
-            duration: formData.get("duration"),
+            "monthly-contribution": +formData.get("monthly-contribution"),
+            "expected-return": +formData.get("expected-return"),
+            duration: +formData.get("duration"),
         };
-        propsFromApp.onCalculate(investObj);
-    }
+        onCalculate(investObj);
+    };
 
-    function resetHandler() {
-        propsFromApp.onCalculate({});
-    }
+    const handleReset = () => {
+        onCalculate({});
+    };
 
     return (
-        <form className={classes.form} onSubmit={submitHandler}>
+        <form className={classes.form} onSubmit={handleSubmit}>
             <div className={classes["input-group"]}>
-                <p>
-                    <label htmlFor="initial-savings">Current Savings (₹)</label>
-                    <input
-                        type="number"
-                        id="initial-savings"
-                        name="initial-savings"
-                    />
-                </p>
-                <p>
-                    <label htmlFor="yearly-contribution">
-                        Yearly Savings (₹)
-                    </label>
-                    <input
-                        type="number"
-                        id="yearly-contribution"
-                        name="yearly-contribution"
-                    />
-                </p>
-            </div>
-            <div className={classes["input-group"]}>
-                <p>
-                    <label htmlFor="expected-return">
-                        Expected Interest (%, per year)
-                    </label>
-                    <input
-                        type="number"
-                        id="expected-return"
-                        name="expected-return"
-                    />
-                </p>
-                <p>
-                    <label htmlFor="duration">
-                        Investment Duration (years)
-                    </label>
-                    <input type="number" id="duration" name="duration" />
-                </p>
+                {[
+                    {
+                        id: "monthly-contribution",
+                        label: "Monthly Contribution (₹)",
+                        type: "number",
+                    },
+                    {
+                        id: "expected-return",
+                        label: "Expected Interest (%, per year)",
+                        type: "number",
+                    },
+                    {
+                        id: "duration",
+                        label: "Investment Duration (years)",
+                        type: "number",
+                    },
+                ].map(({ id, label, type }) => (
+                    <p key={id}>
+                        <label htmlFor={id}>{label}</label>
+                        <input type={type} id={id} name={id} required />
+                    </p>
+                ))}
             </div>
             <p className={classes.actions}>
                 <button
                     type="reset"
                     className={classes.buttonAlt}
-                    onClick={resetHandler}
+                    onClick={handleReset}
                 >
                     Reset
                 </button>

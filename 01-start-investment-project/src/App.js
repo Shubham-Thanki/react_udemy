@@ -4,43 +4,64 @@ import InvestmentResult from "./components/ResultsTable/InvestmentResult";
 
 import { useState } from "react";
 
-function App() {
-    const [userInput, setUserInput] = useState(null); // per-year results
+function calculateFutureValue(
+    monthlyInvestment,
+    monthlyInterestRate,
+    durationInMonths
+) {
+    const monthlyGrowthFactor = 1 + monthlyInterestRate;
+    return Math.round(
+        ((monthlyInvestment *
+            (Math.pow(monthlyGrowthFactor, durationInMonths) - 1)) /
+            monthlyInterestRate) *
+            monthlyGrowthFactor
+    );
+}
 
-    const calculateHandler = (userInput) => {
-        setUserInput(userInput);
+function App() {
+    const [userInput, setUserInput] = useState(null);
+
+    const handleCalculate = (input) => {
+        setUserInput(input);
     };
 
     const yearlyData = [];
     if (userInput) {
-        let initialSavings = +userInput["initial-savings"];
-        const yearlyContribution = +userInput["yearly-contribution"];
-        const expectedReturn = +userInput["expected-return"] / 100;
-        const duration = +userInput.duration;
-        let totalInterest = 0;
+        const monthlyInvestment = +userInput["monthly-contribution"];
+        const monthlyInterestRate = +userInput["expected-return"] / 1200;
+        const durationInYears = +userInput.duration;
 
-        // The below code calculates yearly results (total savings, interest etc)
-        for (let i = 0; i < duration; i++) {
-            const yearlyInterest = initialSavings * expectedReturn;
-            totalInterest += yearlyInterest;
-            // the initialSavings variable is updated on every iteration to get the total savings
-            // for that year.
-            initialSavings += yearlyInterest + yearlyContribution;
+        let previousTotalInterest = 0;
+
+        for (let year = 1; year <= durationInYears; year++) {
+            const totalMonths = year * 12;
+            const totalAmount = calculateFutureValue(
+                monthlyInvestment,
+                monthlyInterestRate,
+                totalMonths
+            );
+            const totalContributions = monthlyInvestment * 12 * year;
+            const totalInterest = totalAmount - totalContributions;
+            const yearlyInterest = totalInterest - previousTotalInterest;
+
+            previousTotalInterest = totalInterest;
+
             yearlyData.push({
-                year: i + 1,
-                investedCapital: initialSavings - yearlyInterest,
-                yearlyInterest: yearlyInterest,
-                totalInterest: totalInterest,
-                savingsEndOfYear: initialSavings,
+                year,
+                investedCapital: totalContributions,
+                yearlyInterest,
+                totalInterest,
+                totalAmount,
             });
         }
     }
+
     return (
-        <div>
+        <>
             <Header />
-            <InvestmentForm onCalculate={calculateHandler} />
+            <InvestmentForm onCalculate={handleCalculate} />
             <InvestmentResult yearlyResults={yearlyData} />
-        </div>
+        </>
     );
 }
 
