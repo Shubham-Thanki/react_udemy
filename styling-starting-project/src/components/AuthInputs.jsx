@@ -1,15 +1,7 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import Button from "./Button";
 import CustomInput from "./Input";
-
-const ControlContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-`;
 
 export default function AuthInputs() {
     const [enteredEmail, setEnteredEmail] = useState("");
@@ -32,12 +24,14 @@ export default function AuthInputs() {
     const passwordNotValid = submitted && enteredPassword.trim().length < 6;
 
     return (
-        <div id="auth-inputs">
-            <ControlContainer>
+        <div
+            id="auth-inputs"
+            className="w-full mx-auto max-w-sm p-8 rounded shadow-md bg-gradient-to-b from-stone-600 to-stone-800"
+        >
+            <div className="flex gap-4 flex-col mb-6">
                 <CustomInput
                     labelText="Email"
-                    forAndId="email"
-                    $invalid={emailNotValid}
+                    invalid={emailNotValid}
                     onChange={(event) =>
                         handleInputChange("email", event.target.value)
                     }
@@ -45,16 +39,18 @@ export default function AuthInputs() {
                 />
                 <CustomInput
                     labelText="Password"
-                    forAndId="password"
-                    $invalid={passwordNotValid}
+                    invalid={passwordNotValid}
                     onChange={(event) =>
                         handleInputChange("password", event.target.value)
                     }
                     type="password"
                 />
-            </ControlContainer>
-            <div className="actions">
-                <button type="button" className="text-button">
+            </div>
+            <div className="flex justify-end gap-4">
+                <button
+                    type="button"
+                    className="text-amber-400 hover:text-amber-500"
+                >
                     Create a new account
                 </button>
                 <Button onClick={handleLogin}>Sign In</Button>
